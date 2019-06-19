@@ -1,0 +1,18 @@
+doctype html
+html
+  head
+    title Memo DB
+  body
+    h1 Memos
+    ul
+      each article, i in articles
+        li= "Title: " + article.title + " Body: " + article.body
+    hr
+    form(method='POST', action='/add')
+      #form-group
+        label Title:
+        input.form-control(name='title', type='text')
+      #form-group
+        label Body:
+        input.form-control(name='body', type='text')
+      input.btn.btn-primary(type='submit',value='Submit')

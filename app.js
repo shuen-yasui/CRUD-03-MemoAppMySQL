@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql');
 const path = require('path');
+const bodyParser = require('body-parser');
 
 const db = mysql.createConnection({
   host     : 'localhost',
@@ -16,30 +17,38 @@ db.connect((err) => {
     console.log("MySql connected");
 });
 
-const app = express();
-
 // listening on port
+const app = express();
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`listening on port ${port}`);
 });
 
 // load resources
+app.set('views', path.join(__dirname, 'public'));
+app.set('view engine', 'pug');
 app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 // Home page
 app.get('/', (req, res) => {
-   res.sendFile(path.join(__dirname, './public/index.html'));
+  let sql = 'SELECT * FROM post';
+  let query = db.query(sql, (err,results) => {
+    if(err) throw err;
+    res.render('index', {
+      articles: results
+    });
+  });
 });
 
 // add new
-app.get('/add', (req,res) => {
-  let post = {title:'T1', body:'B1'};
+app.post('/add', function(req, res){
+  let post = {title:req.body.title, body:req.body.body};
   let sql = 'INSERT INTO post SET ?';
   let query = db.query(sql, post, (err,result) => {
     if(err) throw err;
-    console.log(result);
-    res.send("added");
+    res.redirect('/');
   });
 });
 
@@ -50,16 +59,6 @@ app.get('/fetchall', (req,res) => {
     if(err) throw err;
     console.log(results);
     res.send("fetched all");
-  });
-});
-
-// fetch single
-app.get('/fetch1/:id', (req,res) => {
-  let sql = `SELECT * FROM post WHERE id = ${req.params.id}`;
-  let query = db.query(sql, (err,result) => {
-    if(err) throw err;
-    console.log(result);
-    res.send("fetched single");
   });
 });
 
@@ -84,15 +83,3 @@ app.get('/delete/:id', (req,res) => {
     res.send("deleted");
   });
 });
-
-// buttonclick
-app.get('/buttonclick', (req,res) => {
-  console.log("app , btn clicked");
-  let sql = 'SELECT * FROM post';
-  let query = db.query(sql, (err,results) => {
-    if(err) throw err;
-    res.send(results);
-  });
-});
-
-// button edit
