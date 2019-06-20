@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  h1= "Title: " + article.title
+  h1= "Body: " + article.body
+  hr
+  a.btn.btn-default(href='/note/edit/'+article.id) Edit
+  a.btn.btn-default(href='/note/delete/'+article.id) Delete

@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1 Memos
+  hr
+  form(method='POST', action='/note/edit/'+article.id)
+    #form-group
+      label Title:
+      input.form-control(name='title', type='text', value=article.title)
+    #form-group
+      label Body:
+      input.form-control(name='body', type='text', value=article.body)
+    input.btn.btn-primary(type='submit',value='Submit')

@@ -52,6 +52,39 @@ app.post('/add', function(req, res){
   });
 });
 
+// Get single entry
+app.get('/note/:id', (req,res) => {
+  let sql = `SELECT * FROM post WHERE id = ${req.params.id}`;
+  let query = db.query(sql, (err,result) => {
+    if(err) throw err;
+    console.log(result);
+    res.render('note', {
+      article: result[0]
+    });
+  });
+});
+
+// Get edit page
+app.get('/note/edit/:id', (req,res) => {
+  let sql = `SELECT * FROM post WHERE id = ${req.params.id}`;
+  let query = db.query(sql, (err,result) => {
+    if(err) throw err;
+    console.log(result);
+    res.render('edit', {
+      article: result[0]
+    });
+  });
+});
+
+// edit existing entry
+app.post('/note/edit/:id', function(req, res){
+  let sql = `UPDATE post SET title = '${req.body.title}', body = '${req.body.body}' WHERE id = ${req.params.id}`;
+  let query = db.query(sql, (err,result) => {
+    if(err) throw err;
+    res.redirect('/');
+  });
+});
+
 // fetch all
 app.get('/fetchall', (req,res) => {
   let sql = 'SELECT * FROM post';
@@ -74,12 +107,10 @@ app.get('/update/:id', (req,res) => {
 });
 
 // delete single
-app.get('/delete/:id', (req,res) => {
-  let newTitle = 'NewUpdated';
+app.get('/note/delete/:id', (req,res) => {
   let sql = `DELETE FROM post WHERE id = ${req.params.id}`;
   let query = db.query(sql, (err,result) => {
     if(err) throw err;
-    console.log(result);
-    res.send("deleted");
+    res.redirect('/');
   });
 });
