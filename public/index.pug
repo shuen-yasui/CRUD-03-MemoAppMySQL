@@ -1,17 +1,21 @@
 extends layout
 
 block content
-  h1 Memos
-  ul
-    each article, i in articles
-      li
-        a(href="/note/"+article.id)= "Title: " + article.title + " Body: " + article.body
-  hr
-  form(method='POST', action='/add')
-    #form-group
-      label Title:
-      input.form-control(name='title', type='text')
-    #form-group
-      label Body:
-      input.form-control(name='body', type='text')
-    input.btn.btn-primary(type='submit',value='Submit')
+    h3 My Journal
+    div.my-3.p-3.bg-white.rounded.shadow-sm
+      each article, i in articles
+        div.media-body.pt-3.pb-3.border-bottom.border-gray
+          h3
+            a(href="/note/"+article.id)= article.title
+          p= article.body
+    h3 Add New Entry
+    div.my-3.p-3.bg-white.rounded.shadow-sm
+      form(method='POST', action='/add')
+        #form-group
+          label Title:
+          input.form-control(name='title', type='text')
+        #form-group
+          label Body:
+          input.form-control(name='body', type='text')
+        br
+        input.btn.btn-primary(type='submit',value='Submit')

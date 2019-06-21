@@ -43,7 +43,7 @@ app.get('/', (req, res) => {
 });
 
 // add new
-app.post('/add', function(req, res){
+app.post('/add', (req, res) => {
   let post = {title:req.body.title, body:req.body.body};
   let sql = 'INSERT INTO post SET ?';
   let query = db.query(sql, post, (err,result) => {
@@ -77,7 +77,7 @@ app.get('/note/edit/:id', (req,res) => {
 });
 
 // edit existing entry
-app.post('/note/edit/:id', function(req, res){
+app.post('/note/edit/:id', (req, res) => {
   let sql = `UPDATE post SET title = '${req.body.title}', body = '${req.body.body}' WHERE id = ${req.params.id}`;
   let query = db.query(sql, (err,result) => {
     if(err) throw err;
