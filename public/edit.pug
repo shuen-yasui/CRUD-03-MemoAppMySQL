@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  h1 Memos
+  h3 Edit Note
   hr
   form(method='POST', action='/note/edit/'+article.id)
     #form-group
@@ -10,4 +10,4 @@ block content
     #form-group
       label Body:
       input.form-control(name='body', type='text', value=article.body)
-    input.btn.btn-primary(type='submit',value='Submit')
+    input.btn.btn-primary.mt-3(type='submit',value='Submit')

@@ -1,8 +1,8 @@
 extends layout
 
 block content
-  h1= "Title: " + article.title
-  h1= "Body: " + article.body
-  hr
-  a.btn.btn-default(href='/note/edit/'+article.id) Edit
-  a.btn.btn-default(href='/note/delete/'+article.id) Delete
+  h3= article.title
+  p= article.body
+  div
+    a.btn.btn-primary.mr-3(href='/note/edit/'+article.id) Edit
+    a.btn.btn-primary.delete-note(href='#', data-id=article.id) Delete

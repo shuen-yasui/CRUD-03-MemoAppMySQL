@@ -3,6 +3,7 @@ const mysql = require('mysql');
 const path = require('path');
 const bodyParser = require('body-parser');
 
+// local DB connection
 const db = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
@@ -31,7 +32,7 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-// Home page
+// Get, home page
 app.get('/', (req, res) => {
   let sql = 'SELECT * FROM post';
   let query = db.query(sql, (err,results) => {
@@ -42,7 +43,7 @@ app.get('/', (req, res) => {
   });
 });
 
-// add new
+// Post, new entry
 app.post('/add', (req, res) => {
   let post = {title:req.body.title, body:req.body.body};
   let sql = 'INSERT INTO post SET ?';
@@ -52,7 +53,7 @@ app.post('/add', (req, res) => {
   });
 });
 
-// Get single entry
+// Get, note page
 app.get('/note/:id', (req,res) => {
   let sql = `SELECT * FROM post WHERE id = ${req.params.id}`;
   let query = db.query(sql, (err,result) => {
@@ -64,7 +65,7 @@ app.get('/note/:id', (req,res) => {
   });
 });
 
-// Get edit page
+// Get, edit page
 app.get('/note/edit/:id', (req,res) => {
   let sql = `SELECT * FROM post WHERE id = ${req.params.id}`;
   let query = db.query(sql, (err,result) => {
@@ -76,7 +77,7 @@ app.get('/note/edit/:id', (req,res) => {
   });
 });
 
-// edit existing entry
+// Post, update entry
 app.post('/note/edit/:id', (req, res) => {
   let sql = `UPDATE post SET title = '${req.body.title}', body = '${req.body.body}' WHERE id = ${req.params.id}`;
   let query = db.query(sql, (err,result) => {
@@ -85,32 +86,11 @@ app.post('/note/edit/:id', (req, res) => {
   });
 });
 
-// fetch all
-app.get('/fetchall', (req,res) => {
-  let sql = 'SELECT * FROM post';
-  let query = db.query(sql, (err,results) => {
-    if(err) throw err;
-    console.log(results);
-    res.send("fetched all");
-  });
-});
-
-// update single
-app.get('/update/:id', (req,res) => {
-  let newTitle = 'NewUpdated';
-  let sql = `UPDATE post SET title = '${newTitle}' WHERE id = ${req.params.id}`;
-  let query = db.query(sql, (err,result) => {
-    if(err) throw err;
-    console.log(result);
-    res.send("updated");
-  });
-});
-
-// delete single
-app.get('/note/delete/:id', (req,res) => {
+// Delete, entry
+app.delete('/note/delete/:id', (req,res) => {
   let sql = `DELETE FROM post WHERE id = ${req.params.id}`;
   let query = db.query(sql, (err,result) => {
     if(err) throw err;
-    res.redirect('/');
+    res.send();
   });
 });

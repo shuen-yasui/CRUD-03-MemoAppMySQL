@@ -1,14 +1,14 @@
 extends layout
 
 block content
-    h3 My Journal
+    h3 My Notes
     div.my-3.p-3.bg-white.rounded.shadow-sm
       each article, i in articles
-        div.media-body.pt-3.pb-3.border-bottom.border-gray
-          h3
+        div.media-body.pt-2.pb-2.border-bottom.border-gray
+          h5
             a(href="/note/"+article.id)= article.title
           p= article.body
-    h3 Add New Entry
+    h3 Add New Note
     div.my-3.p-3.bg-white.rounded.shadow-sm
       form(method='POST', action='/add')
         #form-group
