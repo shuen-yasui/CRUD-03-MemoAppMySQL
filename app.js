@@ -2,13 +2,15 @@ const express = require('express');
 const mysql = require('mysql');
 const path = require('path');
 const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
 
 // local DB connection
+dotenv.config();
 const db = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : '',
-  database : 'myDB'
+  host      : process.env.DB_HOST,
+  user      : process.env.DB_USER,
+  password  : process.env.DB_PASS,
+  database  : process.env.DB_DATABASE
 });
 
 db.connect((err) => {
